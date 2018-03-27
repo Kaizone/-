@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #wd {
+            width: 300px;
+            height: 30px;
+            padding: 10px;
+            border: 1px solid #f90;
+            font-size: 30px;
+        }
+        ul {
+            list-style-type:none;
+            margin: 0;
+            padding: 0;
+            width: 320px;
+            border: 1px solid #f90;
+        }
+        li a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: black;
+        }
+        li a:hover {
+            background-color: #f90;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<input type="text" id="wd" /><button>搜索</button>
+<ul></ul>
+
+<script>
+
+    var wd = document.querySelector('#wd');
+    var btn = document.querySelector('button');
+    var ul = document.querySelector('ul');
+
+    //创建script标签，发送请求
+    btn.onclick = function () {
+
+        var script = document.createElement('script');
+        script.src = 'http://api.douban.com/v2/movie/search?q='+ wd.value +'&callback=fn';
+        document.body.appendChild(script);
+
+    };
+
+    //定义函数，，执行
+    function fn(data) {
+
+        ul.innerHTML = data.subjects.map( item => `
+            <li>
+                <a href="">${item.title}</a>
+            </li>
+        ` ).join('');
+
+    }
+
+</script>
+
+</body>
+</html>

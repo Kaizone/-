@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+
+    <button>按钮</button>
+    <button>按钮</button>
+
+
+
+    <script>
+
+        var buttons = document.querySelectorAll('button');
+
+
+        buttons[0].onclick = function() {
+
+//            var xhr = new XMLHttpRequest();
+//            xhr.onload = function () {
+//                console.log(this.responseText);
+//            };
+//            xhr.open('get', 'http://localhost:9999/getdata2', true);
+//            xhr.send();
+
+
+
+            var script = document.createElement('script');
+            script.src = 'http://localhost:9999/getdata2?callback=fn1';
+            document.body.appendChild(script);
+
+        };
+
+        buttons[1].onclick = function () {
+            var script = document.createElement('script');
+            script.src = 'http://localhost:9999/getdata2?callback=fn2';
+            document.body.appendChild(script);
+        };
+
+        function fn1(str) {
+            buttons[0].innerHTML = str;
+        }
+        function fn2(str) {
+            buttons[1].innerHTML = str;
+        }
+    </script>
+
+    <!--<script src="http://localhost:9999/getdata2"></script>-->
+
+</body>
+</html>

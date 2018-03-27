@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>doubansearch</title>
+    <style>
+        ul{
+            margin: 0;
+            padding: 0;
+        }
+        li{
+            list-style: none;
+        }
+        a{
+            color: #000;
+            text-decoration:none;
+        }
+        input{
+            margin: 0;
+            padding: 0;
+            /*outline: none;*/
+            border:1px solid black;
+        }
+        .box{
+            margin: 50px auto;
+            width: 300px;
+            padding: 10px;
+            border:1px solid grey;
+            border-radius: 5px;
+            position: relative;
+        }
+        .search{
+            width:100%;
+            border: 1px solid #ff9900;
+            height: 50px;
+            font-size: 20px;
+            line-height: 50px;
+            border-radius: 5px;
+            outline: none;
+            text-indent: 20px;
+        }
+        .search:hover{
+            border-color: #3c618c;
+        }
+        #btn{
+            position: absolute;
+            right:-90px;
+            top: 10px;
+            outline: none;
+            width: 80px;
+            height: 50px;
+            background: #7f96ff;
+            color:whitesmoke;
+            font-size: 20px;
+            border: 1px solid grey;
+            border-radius: 5px;
+        }
+        #btn:hover{
+            background: #3c618c;
+        }
+        .list{
+            width: 100%;
+            margin-top:10px;
+            display: none;
+        }
+        .list li{
+            width: 100%;
+            height:35px;
+            font-size: 17px;
+            line-height: 35px;
+            text-indent: 20px;
+            cursor: pointer;
+        }
+        .list li:hover{
+            color: #f9fff6;
+            background-color: #ffab42;
+
+        }
+        .list li:hover a{
+            color: #f9fff6;
+
+
+        }
+
+        .list li img{
+            width: 30px;
+            height: 30px;
+            vertical-align: middle;
+            border:none;
+
+            margin-right:5px;
+        }
+        /*电影详细信息*/
+        #wrap{
+
+            display: none;
+            width: 800px;
+            /*height: 200px;*/
+            margin: 0 auto;
+            border:1px solid grey;
+            padding: 0 10px;
+        }
+        #wrap .h3{
+            margin: 0;
+            padding: 0;
+            font-family: "黑体";
+        }
+        #wrap .info{
+            width: 150px;
+            height:160px;
+            /*position: relative;*/
+            display: inline-block;
+        }
+        #wrap .info-img{
+            border: none;
+            width: 135px;
+            height: 181px;
+            display: inline-block;
+            vertical-align: bottom;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+<div id="box" class="box">
+    <input type="text" id="search" class="search">
+    <input type="button" id="btn" value="搜索">
+    <ul id="list" class="list">
+        <!--<li>we</li>-->
+    </ul>
+</div>
+<div id="wrap">
+    <!--<h3 class="h3">标题</h3>-->
+    <!--<div class="info-wrap">-->
+        <!--<img class="info-img" src="" alt="" onerror="this.src='error.jpg'">-->
+        <!--<div class="info">-->
+            <!--<span>-->
+                <!--<span>导演</span> ":" <a href=""></a>-->
+            <!--</span> <br>-->
+             <!--<span>-->
+                <!--<span>编剧</span> ":" <a href=""></a>-->
+            <!--</span> <br>-->
+             <!--<span>-->
+                <!--<span>主演</span> ":" <a href=""></a>-->
+            <!--</span> <br>-->
+             <!--<span>-->
+                <!--<span>类型</span> ":" <a href=""></a>-->
+            <!--</span> <br>-->
+             <!--<span>-->
+                <!--<span>制片国家/地区</span> ":" <a href=""></a>-->
+            <!--</span> <br>-->
+             <!--<span>-->
+                <!--<span>语言</span> ":" <a href=""></a>-->
+            <!--</span> <br>-->
+             <!--<span>-->
+                <!--<span>上映时间</span> ":" <a href=""></a>-->
+            <!--</span> <br>-->
+        <!--</div>-->
+    <!--</div>-->
+</div>
+</body>
+<script>
+    /*(function () {
+        let btn = document.querySelector('#btn');
+        let search = document.querySelector('#search');
+        let list = document.querySelector('#list');
+
+        btn.onclick = function(){
+            let script = document.createElement('script');
+            script.src = 'http://api.douban.com/v2/movie/search?q='+ search.value +'&callback=fn';
+
+            document.body.appendChild(script);
+        };
+
+        function fn(data){
+            list.innerHTML = data.subjects.map( item => `
+            <li>
+                <a href="">${item.title}</a>
+            </li>
+        ` ).join('');
+        }
+    })();*/
+
+    let btn = document.querySelector('#btn');
+    let search = document.querySelector('#search');
+    let list = document.querySelector('#list');
+
+
+    //创建script标签，通过其src向后端发送请求。带有函数名(例如：fn)
+    btn.onclick = function(){
+        let script = document.createElement('script');
+        script.src = 'http://api.douban.com/v2/movie/search?q='+ search.value +'&callback=fn';
+
+        document.body.appendChild(script);
+    };
+
+    //
+    function fn(data){
+        //map方法
+        /*list.innerHTML = data.subjects.map( item => `
+            <li>
+                <a href="">${item.title}</a>
+            </li>
+        ` ).join('');*/
+
+
+        list.innerHTML = '';
+        data.subjects.forEach(function (item) {
+
+            if(item) {
+
+                list.style.display = 'block';
+                let li = document.createElement('li');
+                let a = document.createElement('a');
+                let img = new Image();
+                img.src = item.images.small;
+                //当图片请求失败，使用默认图片
+                img.onerror = function () {
+                    this.src = 'error.jpg';
+                };
+                //a.href = item.images.large; //查看影评图片地址
+                a.href = 'https://movie.douban.com/subject/' + item.id;
+                a.innerHTML = item.title;
+                a.target = "_blank";
+                li.appendChild(img);
+                li.appendChild(a);
+                //li.innerHTML = item.title;
+
+                li.onclick = function(){
+                    wrap.style.display = "block";
+                    infoFn(item);
+                };
+
+                list.appendChild(li);
+            }else{
+                list.style.display = 'none';
+            }
+        });
+
+        console.log(data);
+
+    }
+    function infoFn(item){
+
+        //填写主演
+        let cast = [];
+        item.casts.forEach(function(data){ cast.push(data.name) });
+        console.log(cast);
+        /*//获取编剧信息
+        let script = document.createElement('script');
+        script.src = 'https://movie.douban.com/celebrity/' + item.id +'/works';
+        console.log(script);*/
+        let wrap = document.querySelector('#wrap');
+        wrap.innerHTML = `
+                <h3 class="h3">${item.title}</h3>
+    <div class="info-wrap">
+        <img class="info-img" src="${item.images.medium}" alt="" onerror="this.src='error.jpg'">
+        <div class="info">
+            <span>
+                <span>导演</span> : <a href="">${item.directors[0].name}</a>
+            </span> <br>
+             <span>
+                <span>编剧</span> : <a href="https://movie.douban.com/celebrity/ ${item.id}">${item.title}</a>
+            </span> <br>
+             <span>
+                <span>主演</span> : <a href="">${cast.join(' ')}</a>
+            </span> <br>
+             <span>
+                <span>类型</span> : <a href="">${item.genres.join(' ')}</a>
+            </span> <br>
+             <span>
+                <span>制片国家/地区</span> : <a href="">${item.title}</a>
+            </span> <br>
+             <span>
+                <span>语言</span> : <a href="">${item.title}</a>
+            </span> <br>
+             <span>
+                <span>上映时间</span> : <a href="">${item.year}</a>
+            </span> <br>
+        </div>
+    </div>
+            `;
+    }
+</script>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #wd {
+            width: 300px;
+            height: 30px;
+            padding: 10px;
+            border: 1px solid #f90;
+            font-size: 30px;
+        }
+        ul {
+            display: none;
+            list-style-type:none;
+            margin: 0;
+            padding: 0;
+            width: 320px;
+            border: 1px solid #f90;
+        }
+        li a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: black;
+        }
+        li a:hover {
+            background-color: #f90;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <input type="text" id="wd" />
+    <ul>
+        <!--<li>-->
+            <!--<a href="">111</a>-->
+        <!--</li>-->
+    </ul>
+
+    <script>
+
+        var wd = document.querySelector('#wd');
+        var ul = document.querySelector('ul');
+
+        wd.oninput = function () {
+
+            var script = document.createElement('script');
+            script.src = 'https://suggest.taobao.com/sug?code=utf-8&q='+ wd.value +'&callback=miaov';
+            document.body.appendChild(script);
+
+        };
+
+        function miaov(data) {
+
+            if (data.result.length) {
+                ul.style.display = 'block';
+
+                ul.innerHTML = data.result.map( item => '<li><a href="https://s.taobao.com/search?q='+ item[0] +'" target="_blank">'+ item[0] +'</a></li>' ).join('');
+
+            } else {
+                ul.style.display = 'none';
+            }
+
+        }
+
+    </script>
+
+</body>
+</html>

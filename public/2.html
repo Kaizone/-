@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+
+    <button>按钮</button>
+
+    <script>
+
+        var buttons = document.querySelectorAll('button');
+
+
+        buttons[0].onclick = function() {
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.onload = function () {
+                console.log(this.responseText);
+            };
+
+//            xhr.open('get', 'http://baidu.com', true);
+            xhr.open('get', '/getbaidu', true);
+            xhr.send();
+
+        }
+    </script>
+
+</body>
+</html>
